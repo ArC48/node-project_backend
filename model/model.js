@@ -1,11 +1,11 @@
 const sequelize = require('sequelize');
 const database = require('../database/db');
 
-const ExpenseModel = database.define('expenses', {
+const ExpenseModel = database.define('expensesTables', {
   text: {
     type: sequelize.STRING,
   },
-  cost: {
+  price: {
     type: sequelize.FLOAT,
   },
 });
