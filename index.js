@@ -7,6 +7,7 @@ const port = 4000;
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors);
 
 app.listen(port, () => {
   console.log('listening to the server');
