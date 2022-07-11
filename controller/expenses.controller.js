@@ -22,6 +22,9 @@ exports.addExpense = async (req, res) => {
   if (price && typeof price !== 'number') {
     errorsStorage.push('Price must be a number');
   }
+  if (price < 0) {
+    errorsStorage.push('Price can\'t be a negative number');
+  }
   if (errorsStorage.length) {
     res.status(422).send({ error: errorsStorage });
   }
