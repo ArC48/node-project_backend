@@ -44,6 +44,7 @@ exports.addExpense = async (req, res) => {
   }
 };
 
+
 exports.editExpense = async (req, res) => {
   const { text, price } = req.body;
   const { id } = req.params;
@@ -79,5 +80,17 @@ exports.editExpense = async (req, res) => {
     return res.status(402).send({ error: 'wrong id' });
   } catch (err) {
     return res.status(400).send({ error: err });
+  }  
+}
+
+exports.deleteExpense = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const deleteItem = await expenseModel.destroy({ where: { id } });
+    if (deleteItem) return await this.getExpenses(req, res);
+    return res.status(404).send({ error: 'Wrong Id, try again with a valid expense item' });
+  } catch (err) {
+    return res.status(422).send({ error: err });
   }
 };
