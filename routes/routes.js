@@ -3,9 +3,12 @@ const express = require('express');
 const router = express.Router();
 const expenseController = require('../controller/expenses.controller');
 
-router.get('/expenses', expenseController.getExpenses);
-router.post('/expenses', expenseController.addExpense);
-router.patch('/expenses/:id', expenseController.editExpense);
-router.delete('/expenses/:id', expenseController.deleteExpense);
+router.route('/expenses')
+  .get(expenseController.getExpenses)
+  .post(expenseController.addExpense);
+
+router.route('/expenses/:id')
+  .patch(expenseController.editExpense)
+  .delete(expenseController.deleteExpense);
 
 module.exports = router;
