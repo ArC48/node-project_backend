@@ -48,26 +48,33 @@ exports.editExpense = async (req, res) => {
   const { text, price } = req.body;
   const { id } = req.params;
   const errorsStorage = [];
+  const updatedValues = {};
 
   // Validations
 
-  if (!text.trim() || !price) {
-    errorsStorage.push('fields can\'t be empty');
-  }
-  if (price && typeof price !== 'number') {
-    errorsStorage.push('Price must be a number');
-  }
-  if (price < 0) {
-    errorsStorage.push('Price can\'t be a negative number');
+  if (!text && !price) {
+    errorsStorage.push({ error: 'fields can\'t be empty' });
+  } else {
+    if (text && text.trim()) {
+      if (!text.trim()) errorsStorage.push('Text Field Can\'t be Empty!');
+      else updatedValues.text = text.trim();
+    }
+    if (price || price === 0) {
+      if (typeof price !== 'number') {
+        errorsStorage.push('Price Must be a Number');
+      } else if (price <= 0) {
+        errorsStorage.push('Price Must be larger than 0');
+      } else updatedValues.price = price;
+    }
   }
   if (errorsStorage.length) {
-    res.status(422).send({ error: errorsStorage });
+    return res.status(422).send({ error: errorsStorage });
   }
 
   // Existing expense edit logic
 
   try {
-    const [change] = await expenseModel.update(req.body, { where: { id } });
+    const [change] = await expenseModel.update(updatedValues, { where: { id } });
     if (change) return await this.getExpenses(req, res);
     return res.status(402).send({ error: 'wrong id' });
   } catch (err) {
