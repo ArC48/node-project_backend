@@ -55,7 +55,7 @@ exports.editExpense = async (req, res) => {
   if (!text && !price) {
     errorsStorage.push({ error: 'fields can\'t be empty' });
   } else {
-    if (text && text.trim()) {
+    if (text) {
       if (!text.trim()) errorsStorage.push('Text Field Can\'t be Empty!');
       else updatedValues.text = text.trim();
     }
