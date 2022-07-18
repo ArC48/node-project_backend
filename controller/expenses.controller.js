@@ -15,6 +15,9 @@ exports.addExpense = async (req, res) => {
 
   // Validations
 
+  if (price === 0) {
+    errorsStorage.push('Price must be larger than 0');
+  }
   if (!text || !price) {
     errorsStorage.push('Both Fields are required');
   }
@@ -24,11 +27,11 @@ exports.addExpense = async (req, res) => {
   if (price && typeof price !== 'number') {
     errorsStorage.push('Price must be a number');
   }
-  if (price <= 0) {
+  if (price < 0) {
     errorsStorage.push('Price can\'t be a negative number');
   }
   if (errorsStorage.length) {
-    res.status(422).send({ error: errorsStorage });
+    return res.status(422).send({ error: errorsStorage });
   }
 
   // expense item create & returning all the expenses
